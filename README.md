@@ -1,3 +1,26 @@
+==========MovieReview.java outputs=============
+
+Welcome to Movie Review Service
+
+End of Movie Review Service
+
+***************** Calculation Service start ***************
+
+Top Movie in Year 2006 is Don with rating 16
+
+Top Movie in Year 2006 as critic is : Metro with rating 14
+
+Top movie in Genre Drama is Guru with rating 6
+
+Average rating in year 2006 is 7.3333335
+
+Average rating of movie Don is 5.3333335
+
+Average rating Comedy is 6.0
+
+**************** End of Movie Review Calculation ****************
+
+
 Assignment: Movie Review Service
 The assignment is to implement a service related to movie reviews, and
 following is the description of it. You can choose any language that you
