@@ -54,7 +54,9 @@ public class MovieReview {
         topMovieOfYearCritic("2006");
         topMovieGenre("Drama");
 
-        averageReviewScore("2006");
+        averageReviewScoreInYear("2006");
+        averageReviewScoreOfMovie("Don");
+        averageReviewScoreInGenre("Comedy");
         System.out.println("**************** End of Movie Review Calculation ****************");
     }
 
@@ -154,18 +156,6 @@ public class MovieReview {
         System.out.println("Top Movie in Year " + year + " as critic is : " + movieName + " with rating " + topRating);
     }
 
-    private static int getMaxRatingByUserType(String movieName, String userType) {
-        int max = 0;
-        for (Entry<String, String> ReviewDetail : ReviewDetails.entrySet()) {
-            String movie = ReviewDetail.getKey().split("~")[1];
-            String[] reviewData = ReviewDetail.getValue().split("~");
-            if (movie.equalsIgnoreCase(movieName) && reviewData[1].equalsIgnoreCase(userType)) {
-                max = Integer.max(max, Integer.parseInt(reviewData[0]));
-            }
-        }
-        return max;
-    }
-
 
     public static void topMovieGenre(String genre) {
         System.out.print("Top movie in Genre " + genre);
@@ -186,7 +176,7 @@ public class MovieReview {
         System.out.println(" is " + highratedmovie + " with rating " + highestRating);
     }
 
-    public static void averageReviewScore(String year) {
+    public static void averageReviewScoreInYear(String year) {
         int sum = 0;
         int count = 0;
         for (Entry<String, String> moviedetail : MovieDetails.entrySet()) {
@@ -204,6 +194,39 @@ public class MovieReview {
         System.out.println("Average rating in year " + year + " is " + (float) sum / count);
     }
 
+    public static void averageReviewScoreOfMovie(String movieName){
+        int sum =0;
+        int count =0;
+        for (Entry<String, String> ReviewDetail : ReviewDetails.entrySet()) {
+            String[] ReviewData = ReviewDetail.getKey().split("~");
+            if (ReviewData[1].equalsIgnoreCase(movieName)) {
+                sum+=Integer.parseInt(ReviewDetail.getValue().split("~")[0]);
+                count++;
+            }
+        }
+        if(sum==0 || count==0){
+            throw new IllegalArgumentException("Exception: movie is not present in DB");
+        }else {
+            System.out.println("Average rating of movie " + movieName + " is " + (float) sum / count);
+        }
+    }
+
+    public static void averageReviewScoreInGenre(String genre){
+        int count =0;
+        int reviewSum=0;
+        for (Entry<String, String> moviedetail : MovieDetails.entrySet()) {
+            String[] movieData = moviedetail.getValue().split("~");
+            if(movieData[1].contains(genre)){
+                count+=getReviewCount(moviedetail.getKey());
+                reviewSum+=Integer.parseInt(movieData[2]);
+            }
+        }
+        if(reviewSum==0 || count==0){
+            throw new IllegalArgumentException("Exception: genre is not present in DB");
+        }else {
+            System.out.println("Average rating " + genre + " is " + (float) reviewSum / count);
+        }
+    }
 
     private static int getReviewCount(String movieName) {
         int count = 0;
@@ -214,5 +237,17 @@ public class MovieReview {
             }
         }
         return count;
+    }
+
+    private static int getMaxRatingByUserType(String movieName, String userType) {
+        int max = 0;
+        for (Entry<String, String> ReviewDetail : ReviewDetails.entrySet()) {
+            String movie = ReviewDetail.getKey().split("~")[1];
+            String[] reviewData = ReviewDetail.getValue().split("~");
+            if (movie.equalsIgnoreCase(movieName) && reviewData[1].equalsIgnoreCase(userType)) {
+                max = Integer.max(max, Integer.parseInt(reviewData[0]));
+            }
+        }
+        return max;
     }
 }
